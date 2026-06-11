@@ -61,27 +61,34 @@ const char *p_task_b_wait_250mS			= "   ==> Task    B - Wait:   250mS";
 /********************** external data declaration ****************************/
 uint32_t g_task_b_cnt;
 
+
 /********************** external functions definition ************************/
 /* Task thread */
 void task_b(void *parameters)
 {
-	/*  Declare & Initialize Task Function variables */
-	g_task_b_cnt = G_TASK_B_CNT_INI;
+    uint32_t local_data;
 
-	/* Print out: Task Initialized */
-	LOGGER_INFO(" ");
-	LOGGER_INFO("  %s is running - Tick [mS] = %lu", pcTaskGetName(NULL), xTaskGetTickCount());
+    g_task_b_cnt = G_TASK_B_CNT_INI;
 
-	/* As per most tasks, this task is implemented in an infinite loop. */
-	for (;;)
+    LOGGER_INFO(" ");
+    LOGGER_INFO("  %s is running - Tick [mS] = %lu",
+                pcTaskGetName(NULL),
+                xTaskGetTickCount());
+
+    for (;;)
     {
-		/* Update Task Counter */
-		g_task_b_cnt++;
+        xSemaphoreTake(sem_data_ready, portMAX_DELAY);
 
-    	/* Print out: Wait 250mS */
-		LOGGER_INFO(p_task_b_wait_250mS);
-		vTaskDelay(TASK_B_DEL_MAX);
-	}
+        xSemaphoreTake(mutex_buffer, portMAX_DELAY);
+
+        local_data = shared_data;
+
+        xSemaphoreGive(mutex_buffer);
+
+        LOGGER_INFO("Task B consumio: %lu", local_data);
+
+        vTaskDelay(pdMS_TO_TICKS(500ul));
+    }
 }
 
 /********************** end of file ******************************************/

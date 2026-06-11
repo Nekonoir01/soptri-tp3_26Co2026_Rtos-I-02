@@ -35,19 +35,26 @@
 #ifndef APP_IT_H_
 #define APP_IT_H_
 
+
 /********************** CPP guard ********************************************/
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#include "cmsis_os.h"
 /********************** inclusions *******************************************/
-
+extern uint32_t g_app_cnt;
+extern uint32_t g_app_task_cnt;
+extern volatile uint32_t g_app_tick_cnt;
+extern uint32_t g_task_idle_cnt;
+extern uint32_t g_app_stack_overflow_cnt;
 /********************** macros ***********************************************/
-
+extern SemaphoreHandle_t mutex_buffer;
+extern SemaphoreHandle_t sem_data_ready;
 /********************** typedef **********************************************/
-
+extern uint32_t shared_data;
 /********************** external data declaration ****************************/
-
+extern TaskHandle_t h_task_a;
+extern TaskHandle_t h_task_b;
 /********************** external functions declaration ***********************/
 void app_it_init(void);
 

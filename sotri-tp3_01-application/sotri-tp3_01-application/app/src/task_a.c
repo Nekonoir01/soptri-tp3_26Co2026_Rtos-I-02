@@ -75,12 +75,15 @@ void task_a(void *parameters)
 	/* As per most tasks, this task is implemented in an infinite loop. */
 	for (;;)
 	{
+		xSemaphoreTake(mutex_buffer, portMAX_DELAY);
+
+		shared_data = g_task_a_cnt;
 		/* Update Task Counter */
 		g_task_a_cnt++;
-
-    	/* Print out: Wait 250mS */
-		LOGGER_INFO(p_task_a_wait_250mS);
-		vTaskDelay(TASK_A_DEL_MAX);
+		/* Print out: Task Counter */
+		xSemaphoreGive(mutex_buffer);
+		xSemaphoreGive(sem_data_ready);
+		vTaskDelay(pdMS_TO_TICKS(250ul));
 	}
 }
 

@@ -74,7 +74,10 @@ uint32_t g_app_task_cnt;
 uint32_t g_app_tick_cnt;
 uint32_t g_task_idle_cnt;
 uint32_t g_app_stack_overflow_cnt;
+SemaphoreHandle_t mutex_buffer;
+SemaphoreHandle_t sem_data_ready;
 
+uint32_t shared_data=0;
 uint32_t g_tasks_cnt;
 
 /* Declare a variable of type QueueHandle_t. This is used to reference queues*/
@@ -86,6 +89,8 @@ uint32_t g_tasks_cnt;
 /* Declare a variable of type TaskHandle_t. This is used to reference threads. */
 TaskHandle_t h_task_a;
 TaskHandle_t h_task_b;
+
+
 
 /********************** external functions definition ************************/
 void app_init(void)
@@ -114,7 +119,11 @@ void app_init(void)
      * successfully.
      *
      * Add queue or semaphore (binary or counting) or mutex to registry. */
+	mutex_buffer = xSemaphoreCreateMutex();
+	configASSERT(mutex_buffer != NULL);
 
+	sem_data_ready = xSemaphoreCreateBinary();
+	configASSERT(sem_data_ready != NULL);
 	/* Add threads, ... */
     BaseType_t ret;
 

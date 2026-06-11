@@ -52,7 +52,11 @@
 /********************** internal data definition *****************************/
 
 /********************** external data declaration ****************************/
+mutex_buffer = xSemaphoreCreateMutex();
+sem_data_ready = xSemaphoreCreateBinary();
 
+sem_data_ready = xSemaphoreCreateBinary();
+configASSERT(sem_data_ready != NULL);
 /********************** external functions definition ************************/
 void app_it_init(void)
 {

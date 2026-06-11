@@ -64,8 +64,8 @@ all: main-build
 main-build: sotri-tp3_01-application.elf secondary-outputs
 
 # Tool invocations
-sotri-tp3_01-application.elf sotri-tp3_01-application.map: $(OBJS) $(USER_OBJS) C:\Users\rberr\STM32CubeIDE\workspace_1.19.0\sotri-tp3_01-application\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "sotri-tp3_01-application.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\rberr\STM32CubeIDE\workspace_1.19.0\sotri-tp3_01-application\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="sotri-tp3_01-application.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+sotri-tp3_01-application.elf sotri-tp3_01-application.map: $(OBJS) $(USER_OBJS) C:\Users\rberr\soptri-tp3_26Co2026_Rtos-I-02\sotri-tp3_01-application\sotri-tp3_01-application\STM32F411RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "sotri-tp3_01-application.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\rberr\soptri-tp3_26Co2026_Rtos-I-02\sotri-tp3_01-application\sotri-tp3_01-application\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="sotri-tp3_01-application.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
