@@ -80,6 +80,7 @@ void task_a(void *parameters)
 		shared_data = g_task_a_cnt;
 		/* Update Task Counter */
 		g_task_a_cnt++;
+		LOGGER_INFO("Task A produjo: %lu", shared_data);
 		/* Print out: Task Counter */
 		xSemaphoreGive(mutex_buffer);
 		xSemaphoreGive(sem_data_ready);
