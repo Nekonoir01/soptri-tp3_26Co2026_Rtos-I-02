@@ -62,26 +62,48 @@ const char *p_task_a_wait_250mS			= "   ==> Task    A - Wait:   250mS";
 uint32_t g_task_a_cnt;
 
 /********************** external functions definition ************************/
+extern SemaphoreHandle_t mutex;
+extern SemaphoreHandle_t roomEmpty;
+extern volatile uint32_t readers;
+extern volatile uint32_t shared_data;
 /* Task thread */
 void task_a(void *parameters)
 {
-	/*  Declare & Initialize Task Function variables */
-	g_task_a_cnt = G_TASK_A_CNT_INI;
+    uint32_t local_data;
 
-	/* Print out: Task Initialized */
-	LOGGER_INFO(" ");
-	LOGGER_INFO("  %s is running - Tick [mS] = %lu", pcTaskGetName(NULL), xTaskGetTickCount());
+    for (;;)
+    {
+        /* Entrada lector */
+        xSemaphoreTake(mutex, portMAX_DELAY);
 
-	/* As per most tasks, this task is implemented in an infinite loop. */
-	for (;;)
-	{
-		/* Update Task Counter */
-		g_task_a_cnt++;
+        readers++;
 
-    	/* Print out: Wait 250mS */
-		LOGGER_INFO(p_task_a_wait_250mS);
-		vTaskDelay(TASK_A_DEL_MAX);
-	}
+        if (readers == 1)
+        {
+            xSemaphoreTake(roomEmpty, portMAX_DELAY);
+        }
+
+        xSemaphoreGive(mutex);
+
+        /* Sección crítica de lectura */
+        local_data = shared_data;
+
+        LOGGER_INFO("Reader: %lu", local_data);
+
+        /* Salida lector */
+        xSemaphoreTake(mutex, portMAX_DELAY);
+
+        readers--;
+
+        if (readers == 0)
+        {
+            xSemaphoreGive(roomEmpty);
+        }
+
+        xSemaphoreGive(mutex);
+
+        vTaskDelay(pdMS_TO_TICKS(250));
+    }
 }
 
 /********************** end of file ******************************************/

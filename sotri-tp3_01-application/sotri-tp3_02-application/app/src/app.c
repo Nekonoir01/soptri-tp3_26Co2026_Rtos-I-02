@@ -56,9 +56,11 @@
 #define G_TASKS_CNT_INI					0ul
 
 /********************** internal data declaration ****************************/
-
+SemaphoreHandle_t mutex;
+SemaphoreHandle_t roomEmpty;
 /********************** internal functions declaration ***********************/
-
+volatile uint32_t shared_data = 0;
+volatile uint32_t readers = 0;
 /********************** internal data definition *****************************/
 const char *p_app	= "RTOS - Event-Triggered Systems (ETS)";
 const char *p_app_	= "sotri-tp3_02-application: Readers-Writers";
@@ -114,7 +116,13 @@ void app_init(void)
      * successfully.
      *
      * Add queue or semaphore (binary or counting) or mutex to registry. */
+	mutex = xSemaphoreCreateMutex();
+	configASSERT(mutex != NULL);
 
+	roomEmpty = xSemaphoreCreateBinary();
+	configASSERT(roomEmpty != NULL);
+
+	xSemaphoreGive(roomEmpty);
 	/* Add threads, ... */
     BaseType_t ret;
 

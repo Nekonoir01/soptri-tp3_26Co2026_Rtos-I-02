@@ -62,26 +62,27 @@ const char *p_task_b_wait_250mS			= "   ==> Task    B - Wait:   250mS";
 uint32_t g_task_b_cnt;
 
 /********************** external functions definition ************************/
+extern SemaphoreHandle_t roomEmpty;
+extern volatile uint32_t shared_data;
+
 /* Task thread */
 void task_b(void *parameters)
 {
-	/*  Declare & Initialize Task Function variables */
-	g_task_b_cnt = G_TASK_B_CNT_INI;
+    uint32_t value = 0;
 
-	/* Print out: Task Initialized */
-	LOGGER_INFO(" ");
-	LOGGER_INFO("  %s is running - Tick [mS] = %lu", pcTaskGetName(NULL), xTaskGetTickCount());
-
-	/* As per most tasks, this task is implemented in an infinite loop. */
-	for (;;)
+    for (;;)
     {
-		/* Update Task Counter */
-		g_task_b_cnt++;
+        xSemaphoreTake(roomEmpty, portMAX_DELAY);
 
-    	/* Print out: Wait 250mS */
-		LOGGER_INFO(p_task_b_wait_250mS);
-		vTaskDelay(TASK_B_DEL_MAX);
-	}
+        /* Sección crítica de escritura */
+        shared_data = value++;
+
+        LOGGER_INFO("Writer: %lu", shared_data);
+
+        xSemaphoreGive(roomEmpty);
+
+        vTaskDelay(pdMS_TO_TICKS(2500));
+    }
 }
 
 /********************** end of file ******************************************/

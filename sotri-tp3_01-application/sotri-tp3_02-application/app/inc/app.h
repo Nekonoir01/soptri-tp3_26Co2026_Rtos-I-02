@@ -41,12 +41,17 @@ extern "C" {
 #endif
 
 /********************** inclusions *******************************************/
-
+#include "cmsis_os.h"
 /********************** macros ***********************************************/
 #define TASK_QTY 2ul
 
 /********************** typedef **********************************************/
+extern SemaphoreHandle_t mutex;
+extern SemaphoreHandle_t roomEmpty;
 
+extern volatile uint32_t shared_data;
+extern volatile uint32_t readers;
+/********************** external data declaration ****************************/
 /********************** external data declaration ****************************/
 extern uint32_t g_app_cnt;
 extern uint32_t g_app_task_cnt;
