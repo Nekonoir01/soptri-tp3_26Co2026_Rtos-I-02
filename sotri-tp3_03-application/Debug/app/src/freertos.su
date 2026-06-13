@@ -1,0 +1,3 @@
+../app/src/freertos.c:60:6:vApplicationIdleHook	4	static
+../app/src/freertos.c:78:6:vApplicationTickHook	4	static
+../app/src/freertos.c:91:6:vApplicationStackOverflowHook	24	static,ignoring_inline_asm
