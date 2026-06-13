@@ -12,7 +12,7 @@
 ### Responsable de la entrega:
 | N° SIU | Apellidos, Nombres         | Fecha      | Deadline  |
 | :----- | :------------------------- | :--------: | :-------: |
-| e2610  | Nuñez Cuji, Marcos Neptali | 2026-06-13 | Semana 08 |
+| e2610  | Berrezueta Guerrero, Rodrigo Antonio | 2026-06-13 | Semana 08 |
 
 ---
 
